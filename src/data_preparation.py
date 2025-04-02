@@ -107,19 +107,33 @@ def main():
         # Load MSMARCO from HuggingFace
         print("Loading MSMARCO from HuggingFace")
         try:
-            # Load MSMARCO dataset from HuggingFace
-            msmarco_dataset = load_dataset("microsoft/ms_marco", "v1.1")
+            # Load MSMARCO dataset from HuggingFace with version detection
+            try:
+                msmarco_dataset = load_dataset("microsoft/ms_marco", "v1.1")
+                version = "v1.1"
+            except:
+                msmarco_dataset = load_dataset("microsoft/ms_marco", "v2.1") 
+                version = "v2.1"
             
-            # Extract relevant fields
+            # Extract relevant fields based on version
             docs = []
             for doc in tqdm(msmarco_dataset['train'], desc="Processing MSMARCO documents"):
-                if 'passages' in doc and 'passage_text' in doc['passages'] and len(doc['passages']['passage_text']) > 0:
-                    docs.append({
-                        'docid': doc.get('docid', ''),
-                        'url': doc.get('url', ''),
-                        'title': doc.get('title', ''),
-                        'text': doc['passages']['passage_text'][0]
-                    })
+                if version == "v1.1":
+                    if 'passages' in doc and 'passage_text' in doc['passages'] and len(doc['passages']['passage_text']) > 0:
+                        docs.append({
+                            'docid': doc.get('docid', ''),
+                            'url': doc.get('url', ''),
+                            'title': doc.get('title', ''),
+                            'text': doc['passages']['passage_text'][0]
+                        })
+                elif version == "v2.1":
+                    if 'passage' in doc and len(doc['passage']) > 0:
+                        docs.append({
+                            'docid': doc.get('docid', ''),
+                            'url': doc.get('url', ''),
+                            'title': doc.get('title', ''),
+                            'text': doc['passage']
+                        })
             
             msmarco_df = pd.DataFrame(docs)
             print(f"Loaded {len(msmarco_df)} documents from MSMARCO dataset")
