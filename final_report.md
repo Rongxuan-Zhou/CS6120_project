@@ -41,12 +41,20 @@ The **MS MARCO** dataset contains a large volume of query–document pairs. We a
 1. **Passage Length Distribution**
     - The passage lengths in MS MARCO exhibit a **right-skewed** distribution, with the majority of passages ranging from **200 to 600 characters**. A smaller fraction extend beyond **1000 characters**.
     - *Figure 1 (Histogram)*: Illustrates this right-skewed pattern, highlighting a moderate cluster of shorter passages alongside a long tail of lengthier ones.
+
+    ![Passage Length Distribution](figures/output0.png)
+
 2. **Word Count Distribution**
     - A similar trend emerges in the word count distribution. On average, each document contains roughly **100 words**, indicating that MS MARCO passages are relatively short, making it suitable as a short-text retrieval benchmark.
     - *Figure 2 (Histogram)*: Shows that most passages lie in the **50–150 words** range.
+
+    ![Word Count Distribution](figures/word_count_distribution.png)
+
 3. **Sentence Structure**
     - On average, each passage includes about **4–5 sentences**. These sentence lengths are moderate and generally consistent, facilitating sentence-level semantic encoding by transformer-based models (e.g., SBERT).
     - *Figure 3 (Bar/Histogram)*: Demonstrates the distribution of sentence counts per document, reflecting the typical structural features in MS MARCO passages.
+
+    ![Sentence Count Distribution](figures/sentence_count_distribution.png)
 
 Overall, these data confirm that **MS MARCO** mostly consists of short to moderately long texts, aligning well with our intended hybrid retrieval approach (BM25 + SBERT). Furthermore, MS MARCO's queries (not shown here) tend to be short (often <10 words).
 
@@ -61,13 +69,22 @@ In addition to MS MARCO, we also examined the **STS-B** (Semantic Textual Simila
 1. **Similarity Score Distribution**
     - STS-B assigns scores ranging from **0 (completely unrelated)** to **5 (highly similar/equivalent)**. The distribution is relatively **uniform** across this range, providing a comprehensive set of examples for the model to learn different levels of semantic similarity.
     - *Figure 4 (Histogram)*: Depicts how the 0–5 score range is covered, from very low similarity to near-equivalence.
+
+    ![Similarity Score Distribution](figures/stsb_similarity_distribution.png)
+
+    ![Similarity Score Distribution](stsb_similarity_distribution.png)
+    *Note*: Save the similarity score histogram from `1_data_exploration.ipynb` as `stsb_similarity_distribution.png` and place it in the project directory.
+
 2. **Sentence Length**
     - STS-B sentences tend to be **short**, with an average length of around **10–15 words**, aligning with many social media or short-text scenarios.
     - *Figure 5 (Histogram)*: Reflects that most sentences cluster in a relatively narrow band (under ~20 words), which is highly compatible with typical transformer-based architectures.
 
+    ![Sentence Length Distribution](figures/stsb_sentence_length_distribution.png)
+
+    ![Sentence Length Distribution](stsb_sentence_length_distribution.png)
+    *Note*: Save the sentence length histogram from `1_data_exploration.ipynb` as `stsb_sentence_length_distribution.png` and place it in the project directory.
+
 These insights from STS-B are critical for our retrieval system design, especially when training or fine-tuning SBERT to capture fine-grained semantic similarities. The balanced score distribution helps the model generalize across a wide range of semantic relatedness cases, while the relatively short sentence lengths ease computational overhead and tokenization requirements.
-
-
 
 ### 4.2 SBERT Fine-tuning
 
